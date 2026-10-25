@@ -1,0 +1,6 @@
+{
+  "Clean White": {"mode": "single", "text_color": "#FFFFFF", "active_color": "#FFFFFF", "outline_color": "#000000", "outline_width": 3.5, "shadow": false, "pop_enabled": true},
+  "Yellow Pop": {"mode": "single", "text_color": "#FFFFFF", "active_color": "#FFD400", "outline_color": "#000000", "outline_width": 3.5, "shadow": true, "pop_enabled": true},
+  "Classic WordPop": {"mode": "single", "text_color": "#FFFFFF", "active_color": "#FFD400", "outline_color": "#000000", "outline_width": 3.5, "shadow": true, "pop_enabled": true, "animation_ms": 130, "animation_intensity": 80, "position_percent": 62, "phrase_length": 4},
+  "Phrase Highlight": {"mode": "phrase", "text_color": "#FFFFFF", "active_color": "#FFD400", "outline_color": "#000000", "outline_width": 3.5, "shadow": true, "pop_enabled": true, "animation_ms": 130, "animation_intensity": 80, "position_percent": 62, "phrase_length": 4}
+}

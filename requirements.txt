@@ -1,0 +1,7 @@
+# Tested on Windows x64 with CPython 3.14.
+PySide6>=6.10.1,<7
+faster-whisper>=1.2.1,<2
+# faster-whisper 1.2.1 still passes metadata_errors to av.open(), removed by PyAV 19.
+av>=11,<19
+ctranslate2>=4.6.1,<5
+pytest>=8.4,<10
