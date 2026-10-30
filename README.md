@@ -85,11 +85,11 @@ The first transcription downloads the selected model to the local cache. Approxi
 
 ## Make a subtitled video
 
-1. **Choose a video.** Click **Choose video** or drag a file into the window. MP4, MOV, MKV, and WebM are supported when the installed FFmpeg build can decode their streams. The app shows duration, dimensions, frame rate, and audio availability.
+1. **Choose a video.** Click **Choose video** or drag a file into the window. MP4, MOV, MKV, and WebM are supported when the installed FFmpeg build can decode their streams. The app shows duration, dimensions, frame rate, and audio availability, then loads the full video into the preview player.
 2. **Choose the transcription options.** Keep automatic language detection, or select English or Hindi. Leave the model at `base` for the recommended balance on a modest computer; choose a smaller or larger model as needed.
 3. **Click Transcribe.** Progress appears in the window while the worker runs in the background. The detected language, word count, and inference device are reported when it finishes.
 4. **Review the transcript before exporting.** Check names, places, punctuation, and timing. See [Correct transcript errors](#correct-transcript-errors) below.
-5. **Choose the caption style.** Select a preset, adjust the settings, and use the preview’s **Next word** button or select transcript rows to inspect words. Turn on **Display captions in ALL CAPS** when desired.
+5. **Preview and choose the caption style.** Use **Play/Pause** and the seek bar to watch the full video with audio and synchronized captions. Captions follow the transcript's word timings and selected style, including capitalization, active-word color, outline, and pop animation. Select a transcript row to jump to that word; **Next word** also seeks through the transcript. Turn on **Display captions in ALL CAPS** when desired.
 6. **Choose export settings.** The default is the source dimensions, H.264 MP4, and CRF 20. `Original` keeps the source resolution and aspect ratio; other choices scale to a selected output height. The source frame rate is preserved where practical.
 7. **Click Export MP4.** A progress bar reports rendering status. The app asks before replacing an existing file. Click **Open output folder** after completion to find the result.
 
@@ -99,10 +99,10 @@ The source video is never overwritten. FFmpeg creates the final video in one ren
 
 Always make corrections before **Export MP4**. The transcript table has columns for the word, start time, and end time, with times in seconds.
 
-1. Select a transcript row to show that word in the preview.
+1. Select a transcript row to seek the video preview to that word's start time.
 2. Double-click the **Word**, **Start (s)**, or **End (s)** cell you want to change and type the correction.
 3. Use **Delete selected** to remove unwanted recognized words.
-4. Check the corrected word and its neighbors in the preview. Start times must be nonnegative, end times must be later than start times, and the times must fit within the video.
+4. Play from the corrected word or select nearby rows to check the timing in the full video preview. Start times must be nonnegative, end times must be later than start times, and the times must fit within the video.
 5. Click **Save transcript** to keep your corrections in a reusable `.wordpop.json` file.
 6. Export the MP4 again to burn the corrected text and timings into the video.
 

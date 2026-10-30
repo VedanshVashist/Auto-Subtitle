@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
 from ..services.alignment import Word, load_transcript, save_transcript
 from ..services.video_processor import VideoInfo
 from ..utils.config_manager import ConfigManager
-from ..utils.ffmpeg_utils import FFmpegError, extract_thumbnail, probe_video, unique_output_path
+from ..utils.ffmpeg_utils import FFmpegError, probe_video, unique_output_path
 from ..utils.logging_utils import configure_logging
 from ..utils.system_info import detect_system_info, free_space_gib
 from .preview import PreviewCard
@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
         self.editor = TranscriptEditor()
         transcript_layout.addWidget(self.editor)
         left_layout.addWidget(transcript_box, 2)
-        self.editor.word_selected.connect(self.preview_card.preview.set_index)
+        self.editor.word_selected.connect(self.preview_card.preview.seek_to_word)
         self.editor.changed.connect(self._transcript_edited)
         self.preview_card.cycle_button.clicked.connect(self._select_next_preview_row)
         splitter.addWidget(left)
@@ -204,9 +204,7 @@ class MainWindow(QMainWindow):
         try:
             info = probe_video(path)
             self.media_path, self.media_info = info.path, info
-            thumb = self.app_data_dir / "preview" / f"{info.path.stem}_{info.path.stat().st_size}.jpg"
-            extract_thumbnail(info.path, thumb, at_seconds=min(1, info.duration / 4))
-            self.preview_card.preview.set_image(str(thumb))
+            self.preview_card.set_video(str(info.path))
             audio = f"Audio · {info.audio_codec}" if info.has_audio else "No audio track"
             self.media_info_label.setText(f"{info.path.name}  ·  {info.resolution}  ·  {info.fps:.2f} fps  ·  {info.duration:.2f}s  ·  {audio}")
             default_output = unique_output_path(Path(__file__).resolve().parents[2] / "output", f"{info.path.stem}_WordPop")
@@ -302,8 +300,10 @@ class MainWindow(QMainWindow):
             pass
 
     def _select_next_preview_row(self) -> None:
-        row = self.preview_card.preview._index
         if self.editor.table.rowCount():
+            row = self.editor.table.currentRow()
+            if row < 0:
+                row = self.preview_card.preview.current_index
             self.editor.table.selectRow((row + 1) % self.editor.table.rowCount())
         else:
             self.preview_card.preview.next_word()
@@ -498,6 +498,10 @@ class MainWindow(QMainWindow):
 
     def _set_ready_status(self, message: str) -> None:
         self.status_label.setText(message)
+
+    def closeEvent(self, event) -> None:  # noqa: N802 - Qt override
+        self.preview_card.preview.stop()
+        super().closeEvent(event)
         self.progress.setValue(0)
 
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:  # noqa: N802
